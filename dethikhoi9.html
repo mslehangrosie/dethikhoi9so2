@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Kiểm Tra Trắc Nghiệm - Ms Lê Hằng English</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        brandPurple: '#8854C0',
+                        brandYellow: '#FDCB6E',
+                        brandTeal: '#00C9A7',
+                        correctGreen: '#00D26A',
+                        wrongRed: '#FF4757',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Animated Background Gradient */
+        body {
+            background: linear-gradient(-45deg, #8854C0, #8E44AD, #FDCB6E, #00C9A7);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* SVG Pattern Overlay */
+        .pattern-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.25;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23FFFFFF' fill-opacity='1'%3E%3Cpath d='M0 0h40v40H0z' fill='none'/%3E%3Cpath d='M20 5l2.5 6.5L29 14l-5 4.5 1.5 7-5.5-3.5L14.5 25.5l1.5-7-5-4.5 6.5-2.5zM60 45l2 5 5 2-4 3.5 1 5.5-4-3-4 3 1-5.5-4-3.5 5-2z'/%3E%3Ccircle cx='60' cy='15' r='5'/%3E%3Ccircle cx='15' cy='60' r='6'/%3E%3C/g%3E%3C/svg%3E");
+            animation: floatingPattern 30s linear infinite;
+        }
+
+        @keyframes floatingPattern {
+            from { background-position: 0 0; }
+            to { background-position: 500px 1000px; }
+        }
+
+        /* 3D Button Style (Duolingo/Gamification style) */
+        .btn-3d {
+            transition: all 0.1s ease;
+            box-shadow: 0 5px 0 0 rgba(0, 0, 0, 0.2);
+            position: relative;
+            top: 0;
+        }
+        .btn-3d:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 0 rgba(0, 0, 0, 0.2);
+        }
+        .btn-3d:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Correct & Incorrect Styles */
+        .btn-correct {
+            background-color: #00D26A !important;
+            color: white !important;
+            border-color: #00B159 !important;
+            box-shadow: 0 5px 0 0 #009349 !important;
+        }
+
+        .btn-wrong {
+            background-color: #FF4757 !important;
+            color: white !important;
+            border-color: #E03B4A !important;
+            box-shadow: 0 5px 0 0 #C42B39 !important;
+        }
+
+        /* Shake animation for wrong selection */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .shake-card {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="py-6 px-3 md:px-8 text-gray-800 flex flex-col items-center min-h-screen">
+
+    <div class="pattern-overlay"></div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-4xl mx-auto flex flex-col gap-6">
+
+        <!-- HEADER SECTION -->
+        <header class="bg-white/95 backdrop-blur-md rounded-3xl p-5 md:p-6 shadow-2xl border-4 border-yellow-300 text-center">
+            <!-- Small Teacher Title -->
+            <div class="inline-block bg-purple-100 text-purple-800 text-sm md:text-base font-black px-4 py-1.5 rounded-full mb-2 border border-purple-300 shadow-sm">
+                🎓 Giáo viên tạo: Ms Lê Hằng English
+            </div>
+
+            <!-- Ad Box -->
+            <div class="bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-100 border-2 border-yellow-400 rounded-2xl p-3 my-2 text-xs md:text-sm font-bold text-amber-900 shadow-inner flex items-center justify-center gap-2">
+                <i class="fa-solid fa-phone-volume text-amber-600 text-base animate-bounce"></i>
+                <span>Đăng kí học tiếng anh 1-12, IELTS vui lòng liên hệ Ms Lê Hằng, zalo: <strong class="text-red-600 font-extrabold text-sm md:text-base underline">0584 965 348</strong></span>
+            </div>
+
+            <!-- Important Notice Box -->
+            <div class="bg-red-50 border-2 border-red-300 rounded-2xl p-4 mt-3 text-left shadow-sm">
+                <h3 class="text-red-600 font-black text-sm md:text-base flex items-center gap-2 mb-1">
+                    <span>⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️</span>
+                </h3>
+                <p class="text-gray-700 text-xs md:text-sm font-bold leading-relaxed">
+                    Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên. <br/>
+                    <span class="text-red-600">Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!</span><br/>
+                    <strong class="text-purple-700">Kéo tới đâu, làm tới đó! *</strong>
+                </p>
+            </div>
+
+            <!-- Score Progress Bar -->
+            <div class="mt-4 flex items-center gap-3 bg-gray-100 p-3 rounded-2xl border border-gray-200">
+                <div class="font-extrabold text-sm text-purple-700 whitespace-nowrap">
+                    Tiến độ: <span id="progress-text">0/40</span>
+                </div>
+                <div class="w-full bg-gray-300 rounded-full h-4 overflow-hidden shadow-inner">
+                    <div id="progress-bar" class="bg-gradient-to-r from-green-400 to-teal-500 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div class="font-black text-sm text-teal-700 whitespace-nowrap">
+                    Điểm: <span id="score-text">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- QUESTIONS CONTAINER -->
+        <div id="questions-container" class="flex flex-col gap-6">
+            <!-- Dynamic Questions will be rendered here by JS -->
+        </div>
+
+        <!-- SUBMIT BUTTON AREA -->
+        <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 text-center shadow-xl border-4 border-teal-300">
+            <button id="submit-btn" onclick="submitExam()" class="btn-3d bg-gradient-to-r from-green-500 to-teal-500 text-white text-xl font-black px-10 py-4 rounded-2xl w-full md:w-auto shadow-lg hover:from-green-600 hover:to-teal-600 border-b-4 border-green-700">
+                <i class="fa-solid fa-paper-plane mr-2"></i> NỘP BÀI THI & XEM KẾT QUẢ
+            </button>
+        </div>
+
+    </main>
+
+    <!-- RESULT MODAL -->
+    <div id="result-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl border-8 border-yellow-300 max-w-lg w-full p-6 md:p-8 text-center shadow-2xl relative transform transition-all scale-95 opacity-0" id="modal-content">
+            <div id="result-icon" class="text-6xl mb-3">🏆</div>
+            <h2 class="text-2xl md:text-3xl font-black text-purple-800 mb-2">KẾT QUẢ BÀI THI</h2>
+            <p class="text-gray-600 font-bold mb-4">Ms Lê Hằng English - Tiếng Anh Lớp 9</p>
+
+            <div class="bg-purple-50 rounded-2xl p-4 border-2 border-purple-200 mb-5">
+                <div class="text-sm font-bold text-purple-600">Số câu trả lời đúng</div>
+                <div class="text-4xl font-black text-purple-900 my-1"><span id="final-score">0</span> / 40</div>
+                <div class="text-xs font-semibold text-gray-500" id="percentage-text">(0%)</div>
+            </div>
+
+            <!-- Feedback Message -->
+            <div id="feedback-box" class="bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-4 text-left mb-6">
+                <p id="feedback-text" class="text-sm md:text-base font-bold text-gray-800 leading-relaxed">
+                    <!-- Feedback injected dynamically -->
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button onclick="closeModal()" class="btn-3d bg-teal-500 hover:bg-teal-600 text-white font-black py-3 px-6 rounded-2xl border-b-4 border-teal-700">
+                    <i class="fa-solid fa-eye mr-2"></i> Xem lại chi tiết đáp án
+                </button>
+                <button onclick="reloadExam()" class="btn-3d bg-purple-600 hover:bg-purple-700 text-white font-black py-3 px-6 rounded-2xl border-b-4 border-purple-800">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Làm lại bài thi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO GENERATOR (WEB AUDIO API) & APP LOGIC -->
+    <script>
+        /* WEB AUDIO API SOUND EFFECTS */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            if (type === 'correct') {
+                // Happy Pleasant "Ding-Ding" Tone
+                const now = audioCtx.currentTime;
+                const osc1 = audioCtx.createOscillator();
+                const gain1 = audioCtx.createGain();
+
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(523.25, now); // C5
+                osc1.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+                osc1.frequency.exponentialRampToValueAtTime(783.99, now + 0.2); // G5
+
+                gain1.gain.setValueAtTime(0.3, now);
+                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+
+                osc1.connect(gain1);
+                gain1.connect(audioCtx.destination);
+
+                osc1.start(now);
+                osc1.stop(now + 0.4);
+            } else if (type === 'wrong') {
+                // Soft Buzz / Oh No Tone
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.linearRampToValueAtTime(110, now + 0.3);
+
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.35);
+            }
+        }
+
+        /* CONFETTI ANIMATION */
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const ctxConfetti = confettiCanvas.getContext('2d');
+        let confettiParticles = [];
+
+        function resizeCanvas() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function triggerConfetti() {
+            confettiParticles = [];
+            const colors = ['#00D26A', '#FF4757', '#FDCB6E', '#00C9A7', '#8854C0', '#38ef7d'];
+            for (let i = 0; i < 80; i++) {
+                confettiParticles.push({
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: (Math.random() - 0.7) * 14,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 100,
+                    rotation: Math.random() * 360,
+                    rSpeed: (Math.random() - 0.5) * 10
+                });
+            }
+            animateConfetti();
+        }
+
+        let confettiAnimationId = null;
+        function animateConfetti() {
+            ctxConfetti.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            let active = false;
+
+            confettiParticles.forEach(p => {
+                if (p.life > 0) {
+                    active = true;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.3; // Gravity
+                    p.life -= 1.5;
+                    p.rotation += p.rSpeed;
+
+                    ctxConfetti.save();
+                    ctxConfetti.translate(p.x, p.y);
+                    ctxConfetti.rotate((p.rotation * Math.PI) / 180);
+                    ctxConfetti.fillStyle = p.color;
+                    ctxConfetti.globalAlpha = Math.max(0, p.life / 100);
+                    ctxConfetti.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctxConfetti.restore();
+                }
+            });
+
+            if (active) {
+                confettiAnimationId = requestAnimationFrame(animateConfetti);
+            } else {
+                ctxConfetti.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            }
+        }
+
+        /* FULL DATASET - QUESTIONS 1 TO 40 */
+        const questionsData = [
+            /* Section I: Phonetics & Stress */
+            {
+                id: 1,
+                section: "I. Phonetics",
+                question: "Mark the letter A, B, C, or D to indicate the word whose underlined part differs from the other three in pronunciation.",
+                options: [
+                    "<u>h</u>oliday",
+                    "<u>h</u>onest",
+                    "<u>s</u>omehow",
+                    "<u>h</u>ungry"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Dịch nghĩa & Phát âm phần gạch chân:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. <u>h</u>oliday</strong> /ˈhɒlədeɪ/ (n): kỳ nghỉ &rarr; âm /h/</li>
+                            <li><strong>B. <u>h</u>onest</strong> /ˈɒnɪst/ (adj): trung thực, thành thật &rarr; 'h' là âm câm</li>
+                            <li><strong>C. <u>s</u>omehow</strong> /ˈsʌmhaʊ/ (adv): bằng cách nào đó &rarr; âm /h/</li>
+                            <li><strong>D. <u>h</u>ungry</strong> /ˈhʌŋɡri/ (adj): đói bụng &rarr; âm /h/</li>
+                        </ul>
+                        <p><strong>2. Tại sao chọn B?</strong> Chữ 'h' trong "honest" là âm câm không được phát âm, trong khi 3 từ còn lại 'h' đều được phát âm rõ ràng là /h/.</p>
+                    </div>`
+            },
+            {
+                id: 2,
+                section: "I. Phonetics",
+                question: "Mark the letter A, B, C, or D to indicate the word whose underlined part differs from the other three in pronunciation.",
+                options: [
+                    "<u>ou</u>tskirts",
+                    "m<u>ou</u>th",
+                    "b<u>ou</u>nce",
+                    "c<u>ou</u>ntry"
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Dịch nghĩa & Phát âm phần gạch chân:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. <u>ou</u>tskirts</strong> /ˈaʊtskɜːts/ (n): vùng ngoại ô &rarr; phát âm /aʊ/</li>
+                            <li><strong>B. m<u>ou</u>th</strong> /maʊθ/ (n): cái miệng &rarr; phát âm /aʊ/</li>
+                            <li><strong>C. b<u>ou</u>nce</strong> /baʊns/ (v): nảy, tâng &rarr; phát âm /aʊ/</li>
+                            <li><strong>D. c<u>ou</u>ntry</strong> /ˈkʌntri/ (n): đất nước, quê hương &rarr; phát âm /ʌ/</li>
+                        </ul>
+                        <p><strong>2. Tại sao chọn D?</strong> Phần "ou" trong "country" được phát âm là /ʌ/, trong khi ở 3 đáp án còn lại được phát âm là /aʊ/.</p>
+                    </div>`
+            },
+            {
+                id: 3,
+                section: "I. Phonetics",
+                question: "Mark the letter A, B, C, or D to indicate the word that differs from the other three in the position of primary stress.",
+                options: [
+                    "pickpocket",
+                    "amenity",
+                    "distraction",
+                    "priority"
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Trọng âm & Dịch nghĩa 4 đáp án:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. 'pickpocket</strong> /ˈpɪkpɒkɪt/ (n): kẻ móc túi &rarr; Trọng âm rơi vào âm tiết thứ 1.</li>
+                            <li><strong>B. a'menity</strong> /əˈmiːnəti/ (n): tiện nghi &rarr; Trọng âm rơi vào âm tiết thứ 2.</li>
+                            <li><strong>C. dis'traction</strong> /dɪˈstrækʃn/ (n): sự xao nhãng &rarr; Trọng âm rơi vào âm tiết thứ 2.</li>
+                            <li><strong>D. pri'ority</strong> /praɪˈɒrəti/ (n): sự ưu tiên &rarr; Trọng âm rơi vào âm tiết thứ 2.</li>
+                        </ul>
+                        <p><strong>2. Tại sao chọn A?</strong> Đáp án A có trọng âm 1, ba đáp án B, C, D đều có trọng âm 2.</p>
+                    </div>`
+            },
+            {
+                id: 4,
+                section: "I. Phonetics",
+                question: "Mark the letter A, B, C, or D to indicate the word that differs from the other three in the position of primary stress.",
+                options: [
+                    "commute",
+                    "bustling",
+                    "public",
+                    "jungle"
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Trọng âm & Dịch nghĩa 4 đáp án:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. com'mute</strong> /kəˈmjuːt/ (v): đi lại làm việc &rarr; Trọng âm rơi vào âm tiết thứ 2.</li>
+                            <li><strong>B. 'bustling</strong> /ˈbʌslɪŋ/ (adj): nhộn nhịp, hối hả &rarr; Trọng âm rơi vào âm tiết thứ 1.</li>
+                            <li><strong>C. 'public</strong> /ˈpʌblɪk/ (adj): công cộng &rarr; Trọng âm rơi vào âm tiết thứ 1.</li>
+                            <li><strong>D. 'jungle</strong> /ˈdʒʌŋɡl/ (n): rừng rậm &rarr; Trọng âm rơi vào âm tiết thứ 1.</li>
+                        </ul>
+                        <p><strong>2. Tại sao chọn A?</strong> Đáp án A có trọng âm 2, ba đáp án B, C, D đều có trọng âm 1.</p>
+                    </div>`
+            },
+
+            /* Section II: Multiple Choice (Q5-Q12) */
+            {
+                id: 5,
+                section: "II. Vocabulary & Grammar",
+                question: "Tourists often visit our community to buy local _______ as souvenirs like silk scarves, hats and so on.",
+                options: [
+                    "workshops",
+                    "artisans",
+                    "facilities",
+                    "handicrafts"
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích từ vựng 4 đáp án:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. workshops</strong> (n): xưởng sản xuất / buổi hội thảo</li>
+                            <li><strong>B. artisans</strong> (n): nghệ nhân, thợ làm thủ công</li>
+                            <li><strong>C. facilities</strong> (n): cơ sở vật chất, tiện nghi</li>
+                            <li><strong>D. handicrafts</strong> (n): đồ thủ công mỹ nghệ</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa toàn câu:</strong> "Du khách thường ghé thăm cộng đồng của chúng tôi để mua các món <em>đồ thủ công mỹ nghệ</em> địa phương làm quà kỷ niệm như khăn lụa, nón, v.v."</p>
+                        <p><strong>3. Tại sao chọn D?</strong> "handicrafts" là danh từ chỉ vật thể mua về làm quà souvenir (như khăn lụa, nón). A (xưởng), B (con người nghệ nhân), C (cơ sở) đều sai ngữ cảnh.</p>
+                    </div>`
+            },
+            {
+                id: 6,
+                section: "II. Vocabulary & Grammar",
+                question: "She felt excited when she learned _______ to make lanterns with silk and bamboo.",
+                options: [
+                    "what",
+                    "where",
+                    "when",
+                    "how"
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích từ nghi vấn trước To-V:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. what</strong>: cái gì</li>
+                            <li><strong>B. where</strong>: ở đâu</li>
+                            <li><strong>C. when</strong>: khi nào</li>
+                            <li><strong>D. how</strong>: như thế nào / cách thức làm gì</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa toàn câu:</strong> "Cô ấy cảm thấy rất hào hứng khi học <em>cách</em> làm đèn lồng bằng lụa và tre."</p>
+                        <p><strong>3. Cấu trúc ngữ pháp:</strong> Cấu trúc <strong>learn how + to-V</strong> dùng để chỉ việc "học cách làm một điều gì đó".</p>
+                    </div>`
+            },
+            {
+                id: 7,
+                section: "II. Vocabulary & Grammar",
+                question: "We need to _______ our use of plastic to help the environment.",
+                options: [
+                    "look for",
+                    "cut down on",
+                    "remind",
+                    "get on (well) with"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích cụm động từ (Phrasal Verbs):</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. look for</strong>: tìm kiếm</li>
+                            <li><strong>B. cut down on</strong>: cắt giảm (số lượng, tần suất)</li>
+                            <li><strong>C. remind</strong>: nhắc nhở</li>
+                            <li><strong>D. get on (well) with</strong>: ăn ý, hòa thuận với ai</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa toàn câu:</strong> "Chúng ta cần <em>cắt giảm</em> việc sử dụng đồ nhựa để bảo vệ môi trường."</p>
+                        <p><strong>3. Tại sao chọn B?</strong> "cut down on + N/V-ing" là cụm cố định có nghĩa cắt giảm tiêu thụ cái gì để gây hại ít hơn.</p>
+                    </div>`
+            },
+            {
+                id: 8,
+                section: "II. Vocabulary & Grammar",
+                question: "The _______ the road is, the _______ it is for me to go to school.",
+                options: [
+                    "congested/slow",
+                    "most congested/slowest",
+                    "much congested/much slow",
+                    "more congested/slower"
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích kiến thức ngữ pháp: So sánh kép (Double Comparatives):</strong></p>
+                        <p class="font-bold text-purple-700">Cấu trúc: The + So sánh hơn + S + V, the + So sánh hơn + S + V (Càng... thì càng...)</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>"congested" (tắc nghẽn) là tính từ dài &rarr; dạng so sánh hơn là: <strong>more congested</strong>.</li>
+                            <li>"slow" (chậm) là tính từ ngắn &rarr; dạng so sánh hơn là: <strong>slower</strong>.</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa toàn câu:</strong> "Con đường <em>càng tắc nghẽn</em> thì tôi đi học <em>càng chậm</em> hơn."</p>
+                    </div>`
+            },
+            {
+                id: 9,
+                section: "II. Vocabulary & Grammar",
+                question: "Hong Kong is becoming a concrete _______ as it has too many buildings.",
+                options: [
+                    "forest",
+                    "jungle",
+                    "acne",
+                    "hygiene"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích cụm từ cố định (Collocation) & Từ vựng:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. forest</strong> (n): khu rừng tự nhiên</li>
+                            <li><strong>B. jungle</strong> (n): rừng rậm. Cụm từ <strong>"concrete jungle"</strong> (n): thành phố hiện đại chật chội toàn nhà cao tầng bê tông.</li>
+                            <li><strong>C. acne</strong> (n): mụn trứng cá</li>
+                            <li><strong>D. hygiene</strong> (n): sự vệ sinh</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa toàn câu:</strong> "Hồng Kông đang trở thành một <em>rừng bê tông</em> vì nơi đây có quá nhiều tòa nhà cao tầng."</p>
+                    </div>`
+            },
+            {
+                id: 10,
+                section: "II. Vocabulary & Grammar",
+                question: "If you don't get enough sleep, you _______ perform well in school.",
+                options: [
+                    "may not",
+                    "must not",
+                    "should",
+                    "can"
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích động từ khuyết thiếu (Modal Verbs):</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. may not</strong>: có thể không (chỉ khả năng có thể xảy ra ở hiện tại/tương lai)</li>
+                            <li><strong>B. must not</strong>: không được phép (mệnh lệnh cấm đoán)</li>
+                            <li><strong>C. should</strong>: nên (lời khuyên)</li>
+                            <li><strong>D. can</strong>: có thể (khả năng thực hiện)</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa toàn câu:</strong> "Nếu bạn không ngủ đủ giấc, bạn <em>có thể sẽ không</em> thể hiện tốt ở trường học."</p>
+                        <p><strong>3. Tại sao chọn A?</strong> Câu điều kiện loại 1 diễn tả dự đoán về một khả năng có thể không xảy ra trong tương lai &rarr; dùng "may not".</p>
+                    </div>`
+            },
+            {
+                id: 11,
+                section: "II. Vocabulary & Grammar",
+                question: "George: \"Excuse me, where can I buy the monthly bus ticket?\" - Man: \"_______\"",
+                options: [
+                    "Go to the ticket box at the gate.",
+                    "Bus tickets are really cheap.",
+                    "Sure, please go this way.",
+                    "I beg your pardon."
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích câu hỏi tình huống giao tiếp:</strong></p>
+                        <p>George hỏi địa điểm: <em>"Where can I buy..."</em> (Tôi có thể mua vé xe buýt tháng ở đâu?)</p>
+                        <p><strong>2. Dịch nghĩa 4 đáp án:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. Go to the ticket box at the gate.</strong> (Hãy đến quầy bán vé ở ngoài cổng.) &rarr; Đúng, chỉ địa điểm cụ thể.</li>
+                            <li><strong>B. Bus tickets are really cheap.</strong> (Vé xe buýt rẻ lắm.) &rarr; Sai ngữ cảnh.</li>
+                            <li><strong>C. Sure, please go this way.</strong> (Chắc chắn rồi, mời đi đường này.) &rarr; Thường dùng khi dẫn đường trực tiếp chứ không trả lời câu hỏi ở đâu.</li>
+                            <li><strong>D. I beg your pardon.</strong> (Tôi xin lỗi/bạn nói gì cơ.) &rarr; Không phù hợp.</li>
+                        </ul>
+                    </div>`
+            },
+            {
+                id: 12,
+                section: "II. Vocabulary & Grammar",
+                question: "The _______ brought my package to the door this morning.",
+                options: [
+                    "operator",
+                    "delivery person",
+                    "communicator",
+                    "transportation"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích từ vựng 4 đáp án:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. operator</strong> (n): người vận hành máy / tổng đài viên</li>
+                            <li><strong>B. delivery person</strong> (n): người giao hàng / shipper</li>
+                            <li><strong>C. communicator</strong> (n): người truyền tin / thuyết phục</li>
+                            <li><strong>D. transportation</strong> (n): phương tiện giao thông</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa toàn câu:</strong> "<em>Người giao hàng</em> đã mang bưu kiện đến tận cửa nhà tôi sáng nay."</p>
+                    </div>`
+            },
+
+            /* Section III: Cloze Advertisement (Q13-Q16) */
+            {
+                id: 13,
+                section: "III. Cloze Advertisement (Q13-16)",
+                question: "Read the advertisement and choose the correct option for blank (13):<br/><em class='text-gray-600 block bg-amber-50 p-3 rounded-xl border border-amber-200 my-2'>ENJOYING LOCAL CUISINE<br/>1. When eating at a restaurant, make sure to sit (13) _______ a well-lit area.</em>",
+                options: [
+                    "into",
+                    "within",
+                    "on",
+                    "in"
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích giới từ vị trí:</strong></p>
+                        <p>Cụm từ cố định chỉ vị trí trong một khoảng/khu vực không gian: <strong>"in an area"</strong> (ở trong một khu vực).</p>
+                        <p><strong>2. Dịch nghĩa:</strong> "Khi ăn ở nhà hàng, hãy đảm bảo ngồi <em>ở (in)</em> một khu vực đầy đủ ánh sáng."</p>
+                    </div>`
+            },
+            {
+                id: 14,
+                section: "III. Cloze Advertisement (Q13-16)",
+                question: "Read the advertisement and choose the correct option for blank (14):<br/><em class='text-gray-600 block bg-amber-50 p-3 rounded-xl border border-amber-200 my-2'>2. Be adventurous and try (14) _______ local dishes you've never had before.</em>",
+                options: [
+                    "x (no article)",
+                    "the",
+                    "an",
+                    "a"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích mạo từ:</strong></p>
+                        <p>Món ăn địa phương <em>"local dishes"</em> ở đây đã được xác định cụ thể bởi mệnh đề quan hệ phía sau: <em>"you've never had before"</em> (những món mà bạn chưa từng ăn trước đây).</p>
+                        <p><strong>2. Quy tắc ngữ pháp:</strong> Khi một danh từ được xác định bởi mệnh đề tính từ/mệnh đề quan hệ đi kèm &rarr; Bắt buộc dùng mạo từ xác định <strong>"the"</strong>.</p>
+                    </div>`
+            },
+            {
+                id: 15,
+                section: "III. Cloze Advertisement (Q13-16)",
+                question: "Read the advertisement and choose the correct option for blank (15):<br/><em class='text-gray-600 block bg-amber-50 p-3 rounded-xl border border-amber-200 my-2'>3. (15) _______ to the recommendations of locals when choosing a restaurant.</em>",
+                options: [
+                    "Listen",
+                    "Watch",
+                    "Look",
+                    "Refer"
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích động từ đi kèm giới từ "to":</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. Listen to sth</strong>: lắng nghe cái gì (lời khuyên, gợi ý)</li>
+                            <li><strong>B. Watch</strong> + N: theo dõi, xem (không đi trực tiếp với to sth)</li>
+                            <li><strong>C. Look at sth</strong>: nhìn vào cái gì</li>
+                            <li><strong>D. Refer to sth</strong>: tham khảo / đề cập tới cái gì</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa:</strong> "Hãy <em>lắng nghe (Listen to)</em> những lời giới thiệu của người dân địa phương khi chọn nhà hàng."</p>
+                    </div>`
+            },
+            {
+                id: 16,
+                section: "III. Cloze Advertisement (Q13-16)",
+                question: "Read the advertisement and choose the correct option for blank (16):<br/><em class='text-gray-600 block bg-amber-50 p-3 rounded-xl border border-amber-200 my-2'>4. If you have dietary restrictions, (16) _______ the staff know before ordering.</em>",
+                options: [
+                    "lets",
+                    "letting",
+                    "let",
+                    "let's"
+                ],
+                correctOriginalIndex: 2, // C
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Ngữ pháp Câu điều kiện mệnh lệnh:</strong></p>
+                        <p>Mệnh đề chính của câu điều kiện loại 1 dùng để đưa ra lời khuyên/yêu cầu trực tiếp có dạng câu mệnh lệnh: <strong>V (nguyên thể) + O</strong>.</p>
+                        <p><strong>2. Cấu trúc:</strong> <strong>Let + sb + V(bare)</strong> (Hãy để/cho ai làm gì).</p>
+                        <p><strong>3. Dịch nghĩa:</strong> "Nếu bạn có kiêng kị ăn uống, <em>hãy cho (let)</em> nhân viên biết trước khi đặt món."</p>
+                    </div>`
+            },
+
+            /* Section IV: Text Reordering (Q17-Q18) */
+            {
+                id: 17,
+                section: "IV. Text Structure & Logic",
+                question: "Put the sentences (a-c) in the correct order, then fill in the blank to make a logical text.<br/><em>Context: 'I grew up in a small town where everyone knew each other. Moving to the city was a big decision for me. _______'</em><br/>" +
+                          "<div class='bg-purple-50 p-3 rounded-xl my-2 text-sm font-semibold border border-purple-200 space-y-1'>" +
+                          "<div><strong>a.</strong> Over time, I began to discover small, familiar spots, like the café around the corner and the quiet library.</div>" +
+                          "<div><strong>b.</strong> I learned that even in the middle of a huge city, it was possible to create a sense of belonging.</div>" +
+                          "<div><strong>c.</strong> In the first few days, I found the city life very overwhelming, from navigating crowded streets to adjusting to the fast pace of life.</div>" +
+                          "</div>",
+                options: [
+                    "b - c - a",
+                    "c - a - b",
+                    "c - b - a",
+                    "b - a - c"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích mạch thời gian & cảm xúc câu chuyện:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Mở đầu:</strong> Vừa chuyển lên thành phố.</li>
+                            <li><strong>Thì 1 (Mới bắt đầu - c):</strong> <em>"In the first few days..."</em> (Những ngày đầu tiên cảm thấy ngợp trước nhịp sống nhanh).</li>
+                            <li><strong>Thì 2 (Dần dần theo thời gian - a):</strong> <em>"Over time..."</em> (Theo thời gian bắt đầu khám phá ra những góc nhỏ quen thuộc).</li>
+                            <li><strong>Thì 3 (Bài học rút ra - b):</strong> <em>"I learned that..."</em> (Tôi nhận ra rằng có thể tạo dựng cảm giác thuộc về nơi này).</li>
+                        </ul>
+                        <p><strong>2. Thứ tự hợp lý nhất:</strong> <strong>c &rarr; a &rarr; b</strong> (Đáp án B).</p>
+                    </div>`
+            },
+            {
+                id: 18,
+                section: "IV. Text Structure & Logic",
+                question: "Choose the sentence that can end the text (in Question 17) most appropriately.",
+                options: [
+                    "However, the constant noise of the city annoyed me, and I could not find any happiness.",
+                    "Despite my efforts, I could not love the city so I moved back to my small hometown.",
+                    "Soon, the city felt more like home as I became part of the community.",
+                    "I realized that the city is better than my hometown and decided to stay."
+                ],
+                correctOriginalIndex: 2, // C
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích nội dung kết bài:</strong></p>
+                        <p>Câu b ở cuối câu hỏi 17 kết luận việc tác giả tạo dựng được <em>"a sense of belonging"</em> (cảm giác thuộc về). Do đó câu chốt kết thúc bài phải mang sắc thái tích cực, hài lòng.</p>
+                        <p><strong>2. Dịch nghĩa câu C:</strong> "Chẳng mấy chốc, thành phố đã cho tôi cảm giác như ở nhà khi tôi trở thành một phần của cộng đồng." &rarr; Hoàn toàn phù hợp logic!</p>
+                    </div>`
+            },
+
+            /* Section V: Cloze Reading (Q19-Q24) */
+            {
+                id: 19,
+                section: "V. Cloze Reading",
+                question: "Choose the correct option for blank (19) in the passage:<br/><em class='text-gray-600 block bg-blue-50 p-3 rounded-xl border border-blue-200 my-2'>'Sometimes homework (19) _______ be challenging, especially if you have a few assignments to complete in the same week...'</em>",
+                options: [
+                    "mustn't",
+                    "can",
+                    "should",
+                    "mightn't"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích ngữ pháp:</strong> Động từ khuyết thiếu <strong>"can"</strong> diễn tả một khả năng chung có thể xảy ra trong thực tế.</p>
+                        <p><strong>2. Dịch nghĩa:</strong> "Thỉnh thoảng bài tập về nhà <em>có thể (can)</em> rất thách thức/khó khăn, đặc biệt khi bạn có nhiều bài tập cần hoàn thành trong cùng một tuần."</p>
+                    </div>`
+            },
+            {
+                id: 20,
+                section: "V. Cloze Reading",
+                question: "Choose the correct option for blank (20) in the passage:<br/><em class='text-gray-600 block bg-blue-50 p-3 rounded-xl border border-blue-200 my-2'>'...This only causes more stress and there are some ways to avoid (20) _______ homework.'</em>",
+                options: [
+                    "to delaying",
+                    "being delayed",
+                    "delaying",
+                    "to delay"
+                ],
+                correctOriginalIndex: 2, // C
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Cấu trúc ngữ pháp bắt buộc:</strong></p>
+                        <p class="font-bold text-purple-700">avoid + V-ing (Tránh làm việc gì)</p>
+                        <p><strong>2. Dịch nghĩa:</strong> "...Điều này chỉ gây ra thêm căng thẳng và có một số cách để tránh <em>việc trì hoãn (delaying)</em> bài tập."</p>
+                    </div>`
+            },
+            {
+                id: 21,
+                section: "V. Cloze Reading",
+                question: "Choose the correct option for blank (21) in the passage:<br/><em class='text-gray-600 block bg-blue-50 p-3 rounded-xl border border-blue-200 my-2'>'A really great way is to (21) _______ all distractions when it's time to study. This includes mobile phones...'</em>",
+                options: [
+                    "minimize",
+                    "maintain",
+                    "enhance",
+                    "accomplish"
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Dịch nghĩa 4 động từ:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>A. minimize</strong> (v): giảm thiểu tới mức tối đa</li>
+                            <li><strong>B. maintain</strong> (v): duy trì</li>
+                            <li><strong>C. enhance</strong> (v): tăng cường, nâng cao</li>
+                            <li><strong>D. accomplish</strong> (v): hoàn thành, đạt được</li>
+                        </ul>
+                        <p><strong>2. Dịch nghĩa câu:</strong> "Một cách tuyệt vời là <em>giảm thiểu tối đa (minimize)</em> mọi sự xao nhãng khi đến giờ học."</p>
+                    </div>`
+            },
+            {
+                id: 22,
+                section: "V. Cloze Reading",
+                question: "Choose the correct option for blank (22) in the passage:<br/><em class='text-gray-600 block bg-blue-50 p-3 rounded-xl border border-blue-200 my-2'>'...tell your friends and family that you are going to be studying for a few hours (22) _______ they don't bother you.'</em>",
+                options: [
+                    "besides",
+                    "so that",
+                    "if",
+                    "but"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích liên từ chỉ mục đích:</strong></p>
+                        <p class="font-bold text-purple-700">so that + Clause (để mà...)</p>
+                        <p><strong>2. Dịch nghĩa:</strong> "...nói với bạn bè và gia đình rằng bạn sẽ học bài trong vài giờ <em>để mà (so that)</em> họ không làm phiền bạn."</p>
+                    </div>`
+            },
+            {
+                id: 23,
+                section: "V. Cloze Reading",
+                question: "Choose the correct option for blank (23) in the passage:<br/><em class='text-gray-600 block bg-blue-50 p-3 rounded-xl border border-blue-200 my-2'>'After you have completed a busy week of homework or (23) _______, it's (24) _______ that you treat yourself.'</em>",
+                options: [
+                    "distractions",
+                    "efforts",
+                    "obstacles",
+                    "assignments"
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích từ vựng:</strong> <strong>assignments</strong> (n): bài tập/nhiệm vụ học tập. Từ này tạo thành bộ đôi song song <em>"homework or assignments"</em> đồng nhất ở câu đầu đoạn.</p>
+                        <p><strong>2. Dịch nghĩa:</strong> "Sau khi bạn đã hoàn thành một tuần bận rộn với bài tập về nhà hoặc <em>các bài tập lớn (assignments)</em>..."</p>
+                    </div>`
+            },
+            {
+                id: 24,
+                section: "V. Cloze Reading",
+                question: "Choose the correct option for blank (24) in the passage:<br/><em class='text-gray-600 block bg-blue-50 p-3 rounded-xl border border-blue-200 my-2'>'...it's (24) _______ that you treat yourself.'</em>",
+                options: [
+                    "unimportant",
+                    "importance",
+                    "importantly",
+                    "important"
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Cấu trúc ngữ pháp giả định:</strong></p>
+                        <p class="font-bold text-purple-700">It is + Adj + that + S + V</p>
+                        <p>Sau động từ "it's" (it is) cần một tính từ. <strong>important</strong> (adj) mang nghĩa quan trọng, cần thiết.</p>
+                        <p><strong>2. Dịch nghĩa:</strong> "...thật <em>quan trọng (important)</em> việc bạn thưởng cho bản thân mình."</p>
+                    </div>`
+            },
+
+            /* Section VI: Sentence Transformation & Rearrangement (Q25-Q28) */
+            {
+                id: 25,
+                section: "VI. Sentence Transformation",
+                question: "Mark the letter A, B, C, or D to indicate the sentence that is closest in meaning to the original sentence:<br/><strong>'Tom conducted research to find out how much food his friends were throwing away.'</strong>",
+                options: [
+                    "Tom's research was about wasting food at his friends' home.",
+                    "Tom did research on how to throw away food without harming the environment.",
+                    "Tom's friends carried out research because he was throwing away too much food.",
+                    "Tom carried out a study on his friends' food wasting habit."
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Dịch câu gốc:</strong> "Tom đã tiến hành nghiên cứu để tìm hiểu xem bạn bè anh ấy đang lãng phí/vứt bỏ bao nhiêu thức ăn."</p>
+                        <p><strong>2. Biến đổi đồng nghĩa cụm từ:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><em>conducted research</em> &equiv; <em>carried out a study</em> (tiến hành nghiên cứu)</li>
+                            <li><em>find out how much food his friends were throwing away</em> &equiv; <em>his friends' food wasting habit</em> (thói quen lãng phí thức ăn của bạn bè)</li>
+                        </ul>
+                        <p><strong>3. Đáp án D chính xác nhất về nghĩa.</strong></p>
+                    </div>`
+            },
+            {
+                id: 26,
+                section: "VI. Sentence Transformation",
+                question: "Mark the letter A, B, C, or D to indicate the sentence that is closest in meaning to the original sentence:<br/><strong>'You should wear your coat, or you may catch a cold.'</strong>",
+                options: [
+                    "If you don't wear your coat, you may catch a cold.",
+                    "Unless you wear your coat, you may not catch a cold.",
+                    "You may wear a coat if you don't catch a cold.",
+                    "You may catch a cold even though you wear your coat."
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Dịch câu gốc:</strong> "Bạn nên mặc áo khoác vào, nếu không bạn có thể bị cảm lạnh."</p>
+                        <p><strong>2. Cấu trúc chuyển đổi giữa OR và IF NOT:</strong></p>
+                        <p class="font-bold text-purple-700">Clause 1, or Clause 2 &equiv; If you don't + V1, Clause 2</p>
+                        <p><strong>3. Dịch nghĩa đáp án A:</strong> "Nếu bạn không mặc áo khoác, bạn có thể bị cảm lạnh." &rarr; Hoàn toàn chính xác.</p>
+                    </div>`
+            },
+            {
+                id: 27,
+                section: "VI. Sentence Transformation",
+                question: "Mark the letter A, B, C, or D to indicate the sentence that is made from the given cues:<br/><strong>'The smell / freshly baked cookies / remind me / my grandmother / kitchen.'</strong>",
+                options: [
+                    "The smell of freshly baked cookies reminds me of my grandmother's kitchen.",
+                    "The smell of freshly baked cookies remind me with my grandmother's kitchen.",
+                    "The smell in freshly baked cookies reminds me of my grandmother's kitchen.",
+                    "The smell of freshly baked cookies remind me of my grandmother's kitchen."
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích cấu trúc & Giới từ:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><em>The smell of + N</em>: Mùi hương của cái gì</li>
+                            <li><em>remind sb of sth</em>: Gợi cho ai nhớ về cái gì</li>
+                        </ul>
+                        <p><strong>2. Hòa hợp Chủ ngữ - Động từ:</strong> Chủ ngữ chính là <em>"The smell"</em> (Số ít) &rarr; Động từ <strong>reminds</strong> phải thêm 's'.</p>
+                        <p><strong>3. Chọn A.</strong> (B và D sai vì động từ 'remind' để nguyên mẫu số nhiều; C sai giới từ 'in').</p>
+                    </div>`
+            },
+            {
+                id: 28,
+                section: "VI. Sentence Transformation",
+                question: "Mark the letter A, B, C, or D to indicate the sentence that is made from the given cues:<br/><strong>'big / mall / is, / easier / it / people / to / lost / in it.'</strong>",
+                options: [
+                    "The more bigger the mall is, the easier it is for people to get lost in it .",
+                    "Bigger the mall is, the easier it is for people to get lost in it .",
+                    "The bigger the mall is, the easier it is for people to get lost in it .",
+                    "The bigger the mall is, the more easy it is for people to get lost in it ."
+                ],
+                correctOriginalIndex: 2, // C
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Cấu trúc so sánh kép (Double Comparative):</strong></p>
+                        <p class="font-bold text-purple-700">The + Comparative 1 + S + V, the + Comparative 2 + S + V</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Tính từ ngắn "big" &rarr; <strong>The bigger</strong></li>
+                            <li>Tính từ ngắn "easy" &rarr; <strong>the easier</strong></li>
+                        </ul>
+                        <p><strong>2. Dịch câu C:</strong> "Trung tâm thương mại càng lớn thì người ta càng dễ bị lạc trong đó."</p>
+                    </div>`
+            },
+
+            /* Section VII: Notice & Sign Interpretation (Q29-Q30) */
+            {
+                id: 29,
+                section: "VII. Sign & Notice Interpretation",
+                question: "What does the sign say?<br/>" +
+                          "<div class='my-3 flex justify-center'>" +
+                          "  <div class='border-4 border-red-600 bg-white p-4 rounded-2xl w-64 text-center shadow-lg transform hover:scale-105 transition'>" +
+                          "     <div class='bg-red-600 text-white font-black py-1 px-3 text-lg rounded mb-2 tracking-widest'>⚠️ WARNING</div>" +
+                          "     <div class='flex items-center justify-center gap-3 my-2'>" +
+                          "        <div class='relative w-16 h-16 border-4 border-red-600 rounded-full flex items-center justify-center text-red-600 text-3xl font-black'>" +
+                          "           <i class='fa-solid fa-person-walking-luggage'></i>" +
+                          "           <div class='absolute w-full h-1 bg-red-600 rotate-45'></div>" +
+                          "        </div>" +
+                          "        <div class='text-left font-black text-gray-800 leading-tight text-sm'>No leaning<br/>against</div>" +
+                          "     </div>" +
+                          "  </div>" +
+                          "</div>",
+                options: [
+                    "Leaning against the wall is possible.",
+                    "This is not a leaning wall.",
+                    "Do not lean against the wall.",
+                    "Don't stand near the wall because it's leaning."
+                ],
+                correctOriginalIndex: 2, // C
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Giải nghĩa biển báo:</strong> "WARNING - No leaning against" (Cảnh báo: Không dựa vào tường/bề mặt này).</p>
+                        <p><strong>2. Dịch câu C:</strong> "Do not lean against the wall" (Không được dựa vào tường) &rarr; Đây là cách diễn đạt chính xác nội dung biển cấm.</p>
+                    </div>`
+            },
+            {
+                id: 30,
+                section: "VII. Sign & Notice Interpretation",
+                question: "What does this sign mean?<br/>" +
+                          "<div class='my-3 flex justify-center'>" +
+                          "  <div class='border-4 border-black bg-white p-4 rounded-2xl w-72 text-center shadow-lg transform hover:scale-105 transition'>" +
+                          "     <div class='flex justify-center gap-4 my-1'>" +
+                          "        <div class='relative w-14 h-14 border-4 border-red-600 rounded-full flex items-center justify-center text-red-600 text-2xl font-black'>" +
+                          "           <i class='fa-solid fa-mobile-screen-button'></i>" +
+                          "           <div class='absolute w-full h-1 bg-red-600 rotate-45'></div>" +
+                          "        </div>" +
+                          "     </div>" +
+                          "     <div class='bg-black text-white font-black py-2 px-2 text-sm rounded mt-2 tracking-wider'>NO CELL PHONE USE IN THIS CLASSROOM</div>" +
+                          "  </div>" +
+                          "</div>",
+                options: [
+                    "You are allowed to use cell phones everywhere in this area.",
+                    "Using cell phones is not permitted in this area.",
+                    "You may use cell phones here only for emergencies.",
+                    "Using cell phones is encouraged and allowed here."
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Giải nghĩa biển báo:</strong> "NO CELL PHONE USE IN THIS CLASSROOM" (Không sử dụng điện thoại di động trong phòng học này).</p>
+                        <p><strong>2. Dịch nghĩa câu B:</strong> "Việc sử dụng điện thoại di động là không được cho phép (not permitted) ở khu vực này." &rarr; Hoàn toàn chính xác.</p>
+                    </div>`
+            },
+
+            /* Section VIII: Reading Comprehension (Q31-Q36) */
+            {
+                id: 31,
+                section: "VIII. Reading Comprehension",
+                question: "Read the passage about the Amish people and answer Question 31:<br/>" +
+                          "<div class='bg-purple-50 p-4 rounded-2xl text-xs md:text-sm leading-relaxed border border-purple-200 my-2 text-gray-700 max-h-48 overflow-y-auto space-y-2'>" +
+                          "<p>The Amish are a religious group of people who believe in living separately from the modern world. They live in Canada and the USA in small farming communities of about 300 people. In total, there are about 80,000 'Old Order Amish'. These people do not drive cars or fly in airplane, but simply drive horses and carts. As a result, their communities are small and close, and their kids do not usually move to another area when they grow up. They stay and marry someone from the community.</p>" +
+                          "<p>Family values and traditions are very important to the Amish. At home, they speak a very old-fashioned version of German, although they also speak English when it is necessary. They wear very simple clothing. The men wear wide black hats, plain trousers and shirts. After they marry, the men grow beards. The women, and even the little girls, wear bonnets (a kind of old-fashioned hat) and long dresses. They make their living from farming, using old traditional methods. Their houses do not have electricity or telephones. Their children finish school at about the age of 12 or 13; after that they learn from working on their farm. All other children in the USA must attend school for another four years. Many people do not understand the simple and slow way of Amish life. But the Amish believe that modern society is too stressful and materialistic. They feel that their lifestyle is a true reflection of their religious beliefs.</p>" +
+                          "</div>" +
+                          "<strong>What is the best title of the reading text?</strong>",
+                options: [
+                    "The Amish - a people from the past?",
+                    "Powerful groups of people in Canada and the US.",
+                    "New trend of living in the world.",
+                    "A history of the Amish."
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích ý chính toàn bài:</strong> Bài viết mô tả cuộc sống đặc biệt của người Amish - sống tách biệt với thế giới hiện đại, không dùng xe hơi, điện thoại hay điện, mặc trang phục cổ xưa giống như người ở quá khứ.</p>
+                        <p><strong>2. Tiêu đề phù hợp nhất:</strong> <strong>A. The Amish - a people from the past?</strong> (Người Amish - một dân tộc đến từ quá khứ?).</p>
+                    </div>`
+            },
+            {
+                id: 32,
+                section: "VIII. Reading Comprehension",
+                question: "The word <strong>\"separately\"</strong> in paragraph 1 is OPPOSITE in meaning to _______.",
+                options: [
+                    "individual",
+                    "jointly",
+                    "alone",
+                    "solo"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Tìm từ TRÁI NGHĨA (OPPOSITE):</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>separately</strong> (adv): riêng rẽ, tách biệt</li>
+                            <li><strong>A. individual</strong> (adj): cá nhân</li>
+                            <li><strong>B. jointly</strong> (adv): cùng nhau, chung &rarr; Trái nghĩa với riêng rẽ/tách biệt.</li>
+                            <li><strong>C. alone</strong> (adv): một mình</li>
+                            <li><strong>D. solo</strong> (adv): đơn độc</li>
+                        </ul>
+                    </div>`
+            },
+            {
+                id: 33,
+                section: "VIII. Reading Comprehension",
+                question: "The Amish people _______.",
+                options: [
+                    "often stay in their communities for life",
+                    "live the life on the move",
+                    "are used to using electricity",
+                    "have a large population"
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Căn cứ thông tin trong đoạn 1:</strong></p>
+                        <p class="italic text-purple-700 font-semibold border-l-4 border-purple-400 pl-2">"...and their kids do not usually move to another area when they grow up. They stay and marry someone from the community."</p>
+                        <p><strong>2. Dịch nghĩa A:</strong> "thường ở lại cộng đồng của họ suốt đời." &rarr; Khớp hoàn toàn với thông tin bài đọc.</p>
+                    </div>`
+            },
+            {
+                id: 34,
+                section: "VIII. Reading Comprehension",
+                question: "The word <strong>\"they\"</strong> in paragraph 1 refers to _______.",
+                options: [
+                    "children",
+                    "adults",
+                    "men",
+                    "women"
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích ngữ cảnh đoạn 1:</strong></p>
+                        <p class="italic text-purple-700 font-semibold border-l-4 border-purple-400 pl-2">"...and their kids do not usually move to another area when <strong>they</strong> grow up."</p>
+                        <p>Từ <strong>"they"</strong> thay thế trực tiếp cho danh từ số nhiều đứng ngay trước nó là <strong>"their kids"</strong> (con cái/trẻ em &rarr; children).</p>
+                    </div>`
+            },
+            {
+                id: 35,
+                section: "VIII. Reading Comprehension",
+                question: "The word <strong>\"stressful\"</strong> in paragraph 2 is CLOSEST in meaning to _______.",
+                options: [
+                    "effortless",
+                    "gentle",
+                    "disturbing",
+                    "mindful"
+                ],
+                correctOriginalIndex: 2, // C
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Tìm từ ĐỒNG NGHĨA (CLOSEST):</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>stressful</strong> (adj): căng thẳng, gây áp lực</li>
+                            <li><strong>A. effortless</strong>: không tốn sức</li>
+                            <li><strong>B. gentle</strong>: hiền hòa, nhẹ nhàng</li>
+                            <li><strong>C. disturbing</strong>: gây lo âu, gây áp lực/căng thẳng &rarr; Đồng nghĩa nhất.</li>
+                            <li><strong>D. mindful</strong>: chú ý, có ý thức</li>
+                        </ul>
+                    </div>`
+            },
+            {
+                id: 36,
+                section: "VIII. Reading Comprehension",
+                question: "Which of the following is NOT true about the Amish?",
+                options: [
+                    "They can not use English to communicate with others.",
+                    "The Amish people live in the countryside and work on farms for a living.",
+                    "Children in the Amish's communities do not have a higher education.",
+                    "They prefer traditional and simple clothing to trendy suits."
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Kiểm tra tính ĐÚNG / SAI trong đoạn 2:</strong></p>
+                        <p class="italic text-purple-700 font-semibold border-l-4 border-purple-400 pl-2">"...although they also speak English when it is necessary." (dù họ vẫn nói tiếng Anh khi cần thiết).</p>
+                        <p><strong>2. Kết luận:</strong> Phát biểu A cho rằng <em>"Họ không thể dùng tiếng Anh"</em> là <strong>SAI (NOT true)</strong>.</p>
+                    </div>`
+            },
+
+            /* Section IX: Gap Fill Passage (Q37-Q40) */
+            {
+                id: 37,
+                section: "IX. Passage Sentence Completion",
+                question: "Read the passage below and select the best phrase for blank (37):<br/>" +
+                          "<div class='bg-green-50 p-4 rounded-2xl text-xs md:text-sm leading-relaxed border border-green-200 my-2 text-gray-700 space-y-2'>" +
+                          "Local communities play a vital role in the social fabric of society. <strong>(37) _______</strong>, people in these communities often come together to support one another in times of need. Whether it's through organizing events, volunteering, or simply being a good neighbor, <strong>(38) _______</strong> fosters a sense of belonging and mutual respect. Community centers and local organizations <strong>(39) _______</strong> by providing spaces for activities, education, and social interaction. In an increasingly digital world, <strong>(40) _______</strong> is more important than ever." +
+                          "</div>",
+                options: [
+                    "maintaining strong community connections",
+                    "play a key role in strengthening community bonds",
+                    "The sense of community",
+                    "Local communities provide support networks"
+                ],
+                correctOriginalIndex: 3, // D
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích ngữ pháp & vị trí (37):</strong> Vị trí đứng đầu câu sau dấu chấm cần một Mệnh đề hoàn chỉnh (Chủ ngữ + Động từ).</p>
+                        <p><strong>2. Phân tích đáp án D:</strong> <strong>"Local communities provide support networks"</strong> (Cộng đồng địa phương cung cấp các mạng lưới hỗ trợ) đóng vai trò là một mệnh đề hoàn chỉnh hoàn hảo về nghĩa và cấu trúc.</p>
+                    </div>`
+            },
+            {
+                id: 38,
+                section: "IX. Passage Sentence Completion",
+                question: "Select the best phrase for blank (38) in the passage above:",
+                options: [
+                    "maintaining strong community connections",
+                    "play a key role in strengthening community bonds",
+                    "The sense of community",
+                    "Local communities provide support networks"
+                ],
+                correctOriginalIndex: 2, // C
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích cấu trúc câu (38):</strong> Đứng trước động từ chia số ít <strong>"fosters"</strong> cần một Cụm Danh từ làm Chủ ngữ.</p>
+                        <p><strong>2. Phân tích đáp án C:</strong> <strong>"The sense of community"</strong> (Ý thức cộng đồng) là cụm danh từ số ít, làm chủ ngữ phù hợp nhất cho động từ "fosters".</p>
+                    </div>`
+            },
+            {
+                id: 39,
+                section: "IX. Passage Sentence Completion",
+                question: "Select the best phrase for blank (39) in the passage above:",
+                options: [
+                    "maintaining strong community connections",
+                    "play a key role in strengthening community bonds",
+                    "The sense of community",
+                    "Local communities provide support networks"
+                ],
+                correctOriginalIndex: 1, // B
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích cấu trúc câu (39):</strong> Đứng sau chủ ngữ số nhiều <em>"Community centers and local organizations"</em> cần một Vị ngữ Động từ số nhiều.</p>
+                        <p><strong>2. Phân tích đáp án B:</strong> <strong>"play a key role in strengthening community bonds"</strong> (đóng vai trò nòng cốt trong việc thắt chặt mối liên kết cộng đồng) là vị ngữ động từ chính xác.</p>
+                    </div>`
+            },
+            {
+                id: 40,
+                section: "IX. Passage Sentence Completion",
+                question: "Select the best phrase for blank (40) in the passage above:",
+                options: [
+                    "maintaining strong community connections",
+                    "play a key role in strengthening community bonds",
+                    "The sense of community",
+                    "Local communities provide support networks"
+                ],
+                correctOriginalIndex: 0, // A
+                explanation: `
+                    <div class="space-y-2">
+                        <p><strong>1. Phân tích cấu trúc câu (40):</strong> Đứng trước động từ <strong>"is more important than ever"</strong> cần một Danh động từ (V-ing) làm chủ ngữ số ít.</p>
+                        <p><strong>2. Phân tích đáp án A:</strong> <strong>"maintaining strong community connections"</strong> (việc duy trì các kết nối cộng đồng mạnh mẽ) đóng vai trò danh động từ làm chủ ngữ hoàn hảo.</p>
+                    </div>`
+            }
+        ];
+
+        /* STATE MANAGEMENT */
+        let processedQuestions = [];
+        let userAnswers = {}; // { qIndex: selectedOptionIndex }
+        let currentScore = 0;
+
+        /* SHUFFLE ARRAY FUNCTION */
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        /* INITIALIZE & SHUFFLE EXAM DATA */
+        function initExam() {
+            processedQuestions = questionsData.map((q, idx) => {
+                // Map options with their original index to keep track of correct answer
+                const optionObjects = q.options.map((optText, origIdx) => ({
+                    text: optText,
+                    isCorrect: origIdx === q.correctOriginalIndex
+                }));
+
+                // Shuffle options
+                const shuffledOpts = shuffleArray(optionObjects);
+
+                return {
+                    ...q,
+                    displayIndex: idx + 1,
+                    shuffledOptions: shuffledOpts
+                };
+            });
+
+            renderQuestions();
+            updateProgress();
+        }
+
+        /* RENDER QUESTIONS TO DOM */
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            processedQuestions.forEach((q, qIndex) => {
+                const card = document.createElement('div');
+                card.id = `question-card-${qIndex}`;
+                card.className = "bg-white/95 backdrop-blur-md rounded-3xl p-5 md:p-7 shadow-xl border-4 border-purple-200 transition-all duration-300 relative";
+
+                // Section Badge
+                let html = `
+                    <div class="flex items-center justify-between mb-3 border-b pb-2 border-gray-100">
+                        <span class="bg-purple-100 text-purple-800 text-xs md:text-sm font-black px-3 py-1 rounded-full">
+                            ${q.section}
+                        </span>
+                        <span class="text-xs font-bold text-gray-400">Câu ${q.displayIndex} / 40</span>
+                    </div>
+
+                    <!-- Question Content -->
+                    <div class="text-base md:text-lg font-extrabold text-gray-800 mb-4 leading-snug">
+                        <span class="text-purple-600 font-black mr-1">Câu ${q.displayIndex}:</span> ${q.question}
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div class="grid grid-cols-1 gap-3 mb-4">
+                `;
+
+                const labels = ['A', 'B', 'C', 'D'];
+                q.shuffledOptions.forEach((opt, optIdx) => {
+                    html += `
+                        <button 
+                            id="opt-btn-${qIndex}-${optIdx}"
+                            onclick="handleSelectOption(${qIndex}, ${optIdx})"
+                            class="btn-3d w-full text-left bg-gray-50 hover:bg-purple-50 border-2 border-gray-200 rounded-2xl p-3.5 md:p-4 font-bold text-gray-700 text-sm md:text-base flex items-start gap-3 transition-colors"
+                        >
+                            <span class="bg-purple-200 text-purple-900 font-black w-7 h-7 rounded-xl flex items-center justify-center text-xs shrink-0 mt-0.5">
+                                ${labels[optIdx]}
+                            </span>
+                            <span class="flex-1">${opt.text}</span>
+                        </button>
+                    `;
+                });
+
+                html += `</div>`;
+
+                // Explanation Box (Hidden initially)
+                html += `
+                    <div id="explanation-${qIndex}" class="hidden mt-4 bg-amber-50 border-2 border-yellow-300 rounded-2xl p-4 md:p-5 shadow-inner">
+                        <div class="flex items-center gap-2 text-amber-800 font-black text-sm md:text-base border-b border-amber-200 pb-2 mb-3">
+                            <i class="fa-solid fa-lightbulb text-yellow-500 text-lg"></i>
+                            <span>GIẢI THÍCH CHI TIẾT TỪ MS LÊ HẰNG:</span>
+                        </div>
+                        <div class="text-xs md:text-sm font-bold text-gray-700 leading-relaxed space-y-2">
+                            ${q.explanation}
+                        </div>
+                    </div>
+                `;
+
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        /* HANDLE OPTION SELECTION */
+        function handleSelectOption(qIndex, optIdx) {
+            // Lock if already answered
+            if (userAnswers.hasOwnProperty(qIndex)) return;
+
+            userAnswers[qIndex] = optIdx;
+
+            const q = processedQuestions[qIndex];
+            const selectedOpt = q.shuffledOptions[optIdx];
+            const card = document.getElementById(`question-card-${qIndex}`);
+            const selectedBtn = document.getElementById(`opt-btn-${qIndex}-${optIdx}`);
+
+            // Lock all option buttons for this question
+            q.shuffledOptions.forEach((_, idx) => {
+                const btn = document.getElementById(`opt-btn-${qIndex}-${idx}`);
+                btn.disabled = true;
+                btn.style.cursor = 'default';
+            });
+
+            if (selectedOpt.isCorrect) {
+                // Correct Choice
+                selectedBtn.classList.add('btn-correct');
+                playSound('correct');
+                triggerConfetti();
+                currentScore++;
+            } else {
+                // Incorrect Choice
+                selectedBtn.classList.add('btn-wrong');
+                playSound('wrong');
+
+                // Shake Card Animation
+                card.classList.add('shake-card');
+                setTimeout(() => card.classList.remove('shake-card'), 400);
+
+                // Highlight the correct answer in green
+                q.shuffledOptions.forEach((opt, idx) => {
+                    if (opt.isCorrect) {
+                        const correctBtn = document.getElementById(`opt-btn-${qIndex}-${idx}`);
+                        correctBtn.classList.add('btn-correct');
+                    }
+                });
+            }
+
+            // Reveal Detailed Explanation Box Immediately
+            const explanationBox = document.getElementById(`explanation-${qIndex}`);
+            explanationBox.classList.remove('hidden');
+
+            updateProgress();
+        }
+
+        /* UPDATE SCORE & PROGRESS BAR */
+        function updateProgress() {
+            const answeredCount = Object.keys(userAnswers).length;
+            document.getElementById('progress-text').innerText = `${answeredCount}/40`;
+            document.getElementById('score-text').innerText = `${currentScore}`;
+
+            const percent = (answeredCount / 40) * 100;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
+        /* SUBMIT EXAM & SHOW MODAL */
+        function submitExam() {
+            const answeredCount = Object.keys(userAnswers).length;
+            if (answeredCount < 40) {
+                const confirmSubmit = confirm(`Con mới làm ${answeredCount}/40 câu. Con có chắc chắn muốn nộp bài sớm không?`);
+                if (!confirmSubmit) return;
+            }
+
+            const percentage = Math.round((currentScore / 40) * 100);
+
+            document.getElementById('final-score').innerText = currentScore;
+            document.getElementById('percentage-text').innerText = `(${percentage}%)`;
+
+            const feedbackText = document.getElementById('feedback-text');
+            const resultIcon = document.getElementById('result-icon');
+
+            if (percentage < 50) {
+                resultIcon.innerText = "💪";
+                feedbackText.innerHTML = `<span class="text-red-600 font-extrabold">Ms Lê Hằng nhắn gửi:</span> "Điểm lần này chưa cao lắm, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!"`;
+            } else if (percentage <= 80) {
+                resultIcon.innerText = "🌟";
+                feedbackText.innerHTML = `<span class="text-amber-600 font-extrabold">Ms Lê Hằng nhắn gửi:</span> "Con đã có tiến bộ khá ổn rồi, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!"`;
+            } else {
+                resultIcon.innerText = "🎉";
+                feedbackText.innerHTML = `<span class="text-green-600 font-extrabold">Ms Lê Hằng nhắn gửi:</span> "Làm tốt lắm, con cố gắng rinh điểm 10 ở lần sau nha!"`;
+            }
+
+            // Show Modal
+            const modal = document.getElementById('result-modal');
+            const modalContent = document.getElementById('modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            triggerConfetti();
+        }
+
+        /* CLOSE MODAL */
+        function closeModal() {
+            const modal = document.getElementById('result-modal');
+            modal.classList.add('hidden');
+        }
+
+        /* RELOAD EXAM */
+        function reloadExam() {
+            userAnswers = {};
+            currentScore = 0;
+            closeModal();
+            initExam();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* START APP ON LOAD */
+        window.onload = function() {
+            initExam();
+        };
+    </script>
+</body>
+</html>
+```eof
